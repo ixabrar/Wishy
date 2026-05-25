@@ -2,15 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 from app.config.settings import settings
-from app.parsers.generic import GenericParser
-# Future imports: from app.parsers.amazon import AmazonParser
+from app.parsers.universal import UniversalParser
 
 class ExtractionService:
-    # We will prioritize parsers. If a store-specific parser returns True for can_parse(), use it.
-    # Otherwise fallback to the generic OpenGraph parser.
+    # We prioritize parsers. If a store-specific parser returns True for can_parse(), use it.
+    # Otherwise fallback to the universal JSON-LD / OpenGraph parser.
     PARSERS = [
-        # AmazonParser,
-        GenericParser
+        UniversalParser
     ]
 
     @classmethod
@@ -59,5 +57,7 @@ class ExtractionService:
             "brand": domain,
             "store": domain,
             "resolved_url": final_url,
+            "canonical_url": final_url,
+            "confidence": 0,
             "success": False
         }

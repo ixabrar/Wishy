@@ -11,4 +11,6 @@ class ExtractResponse(BaseModel):
     brand: Optional[str] = None
     store: Optional[str] = None
     resolved_url: Optional[str] = None
+    canonical_url: Optional[str] = None
+    confidence: int = 0
     success: bool = True

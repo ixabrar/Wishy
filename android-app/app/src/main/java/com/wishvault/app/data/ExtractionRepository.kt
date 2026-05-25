@@ -77,7 +77,7 @@ class ExtractionRepository {
     suspend fun extractProduct(url: String): Result<ExtractedProduct> = withContext(Dispatchers.IO) {
         // Pre-flight check
         if (!checkHealth()) {
-            WishVaultLogger.w("Health", "Backend health check failed or timed out, but attempting extraction anyway...")
+            WishVaultLogger.i("Health", "Backend health check failed or timed out, but attempting extraction anyway...")
         }
 
         WishVaultLogger.i("Ingestion", "Extraction started for URL: $url")
