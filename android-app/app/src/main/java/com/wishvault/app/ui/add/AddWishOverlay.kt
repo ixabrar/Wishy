@@ -20,8 +20,10 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import android.util.Patterns
@@ -50,8 +52,17 @@ fun AddWishOverlay(
         
         var isFetching by remember { mutableStateOf(false) }
         var fetchError by remember { mutableStateOf<String?>(null) }
-        
+        var loadingText by remember { mutableStateOf("Fetching product...") }
+
         val focusRequester = remember { FocusRequester() }
+
+        LaunchedEffect(isFetching) {
+            if (isFetching) {
+                loadingText = "Fetching product..."
+                delay(4000)
+                loadingText = "Waking up server..."
+            }
+        }
 
         val isUrl = Patterns.WEB_URL.matcher(input).matches()
 
@@ -98,12 +109,23 @@ fun AddWishOverlay(
                 verticalArrangement = Arrangement.spacedBy(32.dp)
             ) {
                 if (isFetching) {
-                    androidx.compose.material3.CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
-                    Text(
-                        text = "Fetching product...",
-                        style = MaterialTheme.typography.displayMedium,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    ) {
+                        androidx.compose.material3.CircularProgressIndicator(
+                            modifier = Modifier.size(16.dp),
+                            color = MaterialTheme.colorScheme.primary,
+                            strokeWidth = 2.dp
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = loadingText,
+                            style = MaterialTheme.typography.bodyMedium.copy(letterSpacing = 1.sp),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
                 } else {
                     Text(
                         text = "What caught\nyour eye?",

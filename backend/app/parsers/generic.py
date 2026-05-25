@@ -12,7 +12,12 @@ class GenericParser(BaseParser):
         if og_title and og_title.get("content"):
             return og_title["content"].strip()
             
-        # 2. Try native title
+        # 2. Try standard meta title
+        meta_title = self.soup.find("meta", attrs={"name": "title"})
+        if meta_title and meta_title.get("content"):
+            return meta_title["content"].strip()
+            
+        # 3. Try native title
         if self.soup.title and self.soup.title.string:
             return self.soup.title.string.strip()
             
@@ -36,5 +41,10 @@ class GenericParser(BaseParser):
         og_site = self.soup.find("meta", property="og:site_name")
         if og_site and og_site.get("content"):
             return og_site["content"].strip()
+            
+        # Try meta property site_name
+        meta_site = self.soup.find("meta", attrs={"name": "site_name"})
+        if meta_site and meta_site.get("content"):
+            return meta_site["content"].strip()
         
         return None

@@ -54,6 +54,7 @@ fun DeveloperLogsOverlay(
         exit = fadeOut(tween(300)) + slideOutVertically(tween(300)) { it / 4 }
     ) {
         val logs by WishVaultLogger.logs.collectAsState()
+        val backendStatus by WishVaultLogger.backendStatus.collectAsState()
         val context = LocalContext.current
         val listState = rememberLazyListState()
 
@@ -130,6 +131,16 @@ fun DeveloperLogsOverlay(
                                 text = "Logs active: ${logs.size} entries",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.primary
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "Status: $backendStatus",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = when (backendStatus) {
+                                    "Online" -> Color(0xFF66BB6A)
+                                    "Unreachable" -> MaterialTheme.colorScheme.error
+                                    else -> MaterialTheme.colorScheme.primary
+                                }
                             )
                         }
                     }

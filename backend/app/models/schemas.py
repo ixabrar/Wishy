@@ -10,4 +10,5 @@ class ExtractResponse(BaseModel):
     price: Optional[str] = None
     brand: Optional[str] = None
     store: Optional[str] = None
+    resolved_url: Optional[str] = None
     success: bool = True

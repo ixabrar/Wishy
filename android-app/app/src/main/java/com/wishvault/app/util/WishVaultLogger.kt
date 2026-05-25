@@ -31,6 +31,13 @@ object WishVaultLogger {
     private val _logs = MutableStateFlow<List<LogEntry>>(emptyList())
     val logs: StateFlow<List<LogEntry>> = _logs.asStateFlow()
 
+    private val _backendStatus = MutableStateFlow("Unknown")
+    val backendStatus: StateFlow<String> = _backendStatus.asStateFlow()
+
+    fun updateBackendStatus(status: String) {
+        _backendStatus.value = status
+    }
+
     fun init(context: Context) {
         try {
             val logsDir = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
