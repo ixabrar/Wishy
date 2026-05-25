@@ -18,7 +18,9 @@ data class ExtractedProduct(
     val brand: String,
     val store: String,
     val image: String?,
-    val resolved_url: String?
+    val resolved_url: String?,
+    val canonical_url: String?,
+    val confidence: Int?
 )
 
 class ExtractionRepository {
@@ -102,7 +104,7 @@ class ExtractionRepository {
                 WishVaultLogger.i("Ingestion", "HTTP Success. Raw response received: ${responseBody.take(100)}...")
                 
                 val product = gson.fromJson(responseBody, ExtractedProduct::class.java)
-                WishVaultLogger.i("Ingestion", "JSON Parsing successful. Extracted title: ${product.title}")
+                WishVaultLogger.i("Ingestion", "JSON Parsing successful. Confidence Score: ${product.confidence ?: 0}/100")
                 
                 if (product.resolved_url != null && product.resolved_url != url) {
                     WishVaultLogger.i("Redirect", "URL Resolved: $url -> ${product.resolved_url}")
